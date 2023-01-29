@@ -4,6 +4,7 @@ const wordContainer = document.querySelector('.results-word');
 const form = document.querySelector('.form');
 const soundBtn = document.querySelector('.results-sound');
 const resultsList = document.querySelector('.results-list');
+const errorContainer = document.querySelector('.error');
 
 const url = 'https://api.dictionaryapi.dev/api/v2/entries/en/';
 
@@ -34,8 +35,6 @@ const getDefinition = (definitions) => {
     return definitions.map(renderDefinition).join("");
 }
 const renderItem = (item) => {
-    console.log(getDefinition(item.definitions))
-
     const itemDefinition = item.definitions[0];
     return `<div class="results-item">
                 <div class="results-item__part">${item.partOfSpeech}</div>
@@ -47,6 +46,7 @@ const renderItem = (item) => {
 const showResults = () => {
     resultsList.innerHTML = "";
     results.style.display = "block";
+    errorContainer.style.display = "none";
 
     state.meanings.forEach((item) => resultsList.innerHTML += renderItem(item));
 }
@@ -68,9 +68,13 @@ const handleSubmit = async (e) => {
             }
             wordContainer.innerText = state.word;
             showResults();
+        } else {
+            errorContainer.innerText = data.message;
+            results.style.display = "none";
+            errorContainer.style.display = "block";
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 
 }
