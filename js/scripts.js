@@ -19,15 +19,28 @@ const handleKeyup = (e) => {
     let value = e.target.value;
     state.word = value;
 }
+const renderDefinition = (itemDefinition) => {
+    const example = itemDefinition.example
+    ? `<div class="results-item__example">
+        <p>Example: <span>${itemDefinition.example}</span></p>
+    </div>`
+    : "";
+    return `<div class="results-item__definition">
+                <p>${itemDefinition.definition}</p>
+                ${example}
+            </div>`
+}
+const getDefinition = (definitions) => {
+    return definitions.map(renderDefinition).join("");
+}
 const renderItem = (item) => {
+    console.log(getDefinition(item.definitions))
+
     const itemDefinition = item.definitions[0];
     return `<div class="results-item">
                 <div class="results-item__part">${item.partOfSpeech}</div>
                 <div class="results-item__definitions">
-                    <div class="results-item__definition">
-                        <p>${itemDefinition.definition}</p>
-                        <div class="results-item__example">${itemDefinition.example}</div>
-                    </div>
+                    ${getDefinition(item.definitions)}
                 </div>
             </div>`;
 }
